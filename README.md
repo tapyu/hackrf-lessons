@@ -27,6 +27,7 @@ Note:
 - The `-n 1000000` option tells it to capture one million samples.
 - The resulting file contains interleaved data: the first byte is I₁, the second is Q₁, third is I₂, fourth is Q₂, and so on. When you open sample.iq in a terminal text editor (like nano, vim, or less), you’re seeing nonsense characters because the file contains raw binary data, not readable text. Each I/Q value is a signed 8-bit integer.
 - By default, each I+jQ value is sampled at 20 MS/s. If you ever need to change it, you can pass `-s <rate>` to `hackrf_transfer` (e.g. `-s 10e6` for 10 MS/s).
+- By default, when you don’t give it any -f options,​hackrf_transfer sets the local oscillator to (1GHz)[https://github.com/greatscottgadgets/hackrf/blob/e5cfe1ac2b4d0621705ba3006d0f8abd447f50a3/host/hackrf-tools/src/hackrf_transfer.c#L109].
 
 ## Processing the IQ Data in GNU Radio Companion
 
