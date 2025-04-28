@@ -45,23 +45,6 @@ blocks:
     coordinate: [184, 12]
     rotation: 0
     state: enabled
-- name: blocks_char_to_float_0
-  id: blocks_char_to_float
-  parameters:
-    affinity: ''
-    alias: ''
-    comment: ''
-    maxoutbuf: '0'
-    minoutbuf: '0'
-    scale: '128'
-    vlen: '2'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [432, 264.0]
-    rotation: 0
-    state: enabled
 - name: blocks_file_source_0
   id: blocks_file_source
   parameters:
@@ -81,59 +64,24 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [24, 240.0]
+    coordinate: [72, 240.0]
     rotation: 0
     state: enabled
-- name: blocks_float_to_complex_0
-  id: blocks_float_to_complex
+- name: blocks_interleaved_char_to_complex_0
+  id: blocks_interleaved_char_to_complex
   parameters:
     affinity: ''
     alias: ''
     comment: ''
     maxoutbuf: '0'
     minoutbuf: '0'
-    vlen: '1'
+    scale_factor: '127'
+    vector_input: 'False'
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [864, 264.0]
-    rotation: 0
-    state: enabled
-- name: blocks_stream_to_vector_0
-  id: blocks_stream_to_vector
-  parameters:
-    affinity: ''
-    alias: ''
-    comment: ''
-    maxoutbuf: '0'
-    minoutbuf: '0'
-    num_items: '2'
-    type: byte
-    vlen: '1'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [256, 280.0]
-    rotation: 0
-    state: enabled
-- name: blocks_vector_to_streams_0
-  id: blocks_vector_to_streams
-  parameters:
-    affinity: ''
-    alias: ''
-    comment: ''
-    maxoutbuf: '0'
-    minoutbuf: '0'
-    num_streams: '2'
-    type: float
-    vlen: '1'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [624, 264.0]
+    coordinate: [264, 264.0]
     rotation: 0
     state: enabled
 - name: qtgui_freq_sink_x_0
@@ -214,17 +162,13 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1056, 256.0]
+    coordinate: [456, 256.0]
     rotation: 0
     state: enabled
 
 connections:
-- [blocks_char_to_float_0, '0', blocks_vector_to_streams_0, '0']
-- [blocks_file_source_0, '0', blocks_stream_to_vector_0, '0']
-- [blocks_float_to_complex_0, '0', qtgui_freq_sink_x_0, '0']
-- [blocks_stream_to_vector_0, '0', blocks_char_to_float_0, '0']
-- [blocks_vector_to_streams_0, '0', blocks_float_to_complex_0, '0']
-- [blocks_vector_to_streams_0, '1', blocks_float_to_complex_0, '1']
+- [blocks_file_source_0, '0', blocks_interleaved_char_to_complex_0, '0']
+- [blocks_interleaved_char_to_complex_0, '0', qtgui_freq_sink_x_0, '0']
 
 metadata:
   file_format: 1

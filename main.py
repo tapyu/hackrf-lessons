@@ -108,23 +108,16 @@ class main(gr.top_block, Qt.QWidget):
 
         self._qtgui_freq_sink_x_0_win = sip.wrapinstance(self.qtgui_freq_sink_x_0.qwidget(), Qt.QWidget)
         self.top_layout.addWidget(self._qtgui_freq_sink_x_0_win)
-        self.blocks_vector_to_streams_0 = blocks.vector_to_streams(gr.sizeof_float*1, 2)
-        self.blocks_stream_to_vector_0 = blocks.stream_to_vector(gr.sizeof_char*1, 2)
-        self.blocks_float_to_complex_0 = blocks.float_to_complex(1)
+        self.blocks_interleaved_char_to_complex_0 = blocks.interleaved_char_to_complex(False,127)
         self.blocks_file_source_0 = blocks.file_source(gr.sizeof_char*1, './sample.iq', False, 0, 0)
         self.blocks_file_source_0.set_begin_tag(pmt.PMT_NIL)
-        self.blocks_char_to_float_0 = blocks.char_to_float(2, 128)
 
 
         ##################################################
         # Connections
         ##################################################
-        self.connect((self.blocks_char_to_float_0, 0), (self.blocks_vector_to_streams_0, 0))
-        self.connect((self.blocks_file_source_0, 0), (self.blocks_stream_to_vector_0, 0))
-        self.connect((self.blocks_float_to_complex_0, 0), (self.qtgui_freq_sink_x_0, 0))
-        self.connect((self.blocks_stream_to_vector_0, 0), (self.blocks_char_to_float_0, 0))
-        self.connect((self.blocks_vector_to_streams_0, 0), (self.blocks_float_to_complex_0, 0))
-        self.connect((self.blocks_vector_to_streams_0, 1), (self.blocks_float_to_complex_0, 1))
+        self.connect((self.blocks_file_source_0, 0), (self.blocks_interleaved_char_to_complex_0, 0))
+        self.connect((self.blocks_interleaved_char_to_complex_0, 0), (self.qtgui_freq_sink_x_0, 0))
 
 
     def closeEvent(self, event):
