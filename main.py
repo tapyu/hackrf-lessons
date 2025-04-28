@@ -60,7 +60,7 @@ class main(gr.top_block, Qt.QWidget):
         ##################################################
         # Variables
         ##################################################
-        self.samp_rate = samp_rate = 20e6
+        self.samp_rate = samp_rate = 10e6
 
         ##################################################
         # Blocks

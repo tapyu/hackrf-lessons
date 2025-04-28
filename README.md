@@ -18,7 +18,7 @@ Connect your HackRF and run:
 hackrf_info
 ```
 2. **Capture IQ Samples:**
-Use the following command to capture 1,000,000 samples (at the default sample rate of 20 MS/s) and save them to a file:
+Use the following command to capture 1,000,000 samples (at the [default sample rate of 10 MS/s](https://github.com/greatscottgadgets/hackrf/blob/e5cfe1ac2b4d0621705ba3006d0f8abd447f50a3/host/hackrf-tools/src/hackrf_transfer.c#L107)) and save them to a file:
 ```bash
 hackrf_transfer -r sample.iq -n 1000000
 ```
@@ -26,8 +26,8 @@ Note:
 - The `-r sample.iq` option directs HackRF to write the received data into the file `sample.iq`.
 - The `-n 1000000` option tells it to capture one million samples.
 - The resulting file contains interleaved data: the first byte is I₁, the second is Q₁, third is I₂, fourth is Q₂, and so on. When you open sample.iq in a terminal text editor (like nano, vim, or less), you’re seeing nonsense characters because the file contains raw binary data, not readable text. Each I/Q value is a signed 8-bit integer.
-- By default, each I+jQ value is sampled at 20 MS/s. If you ever need to change it, you can pass `-s <rate>` to `hackrf_transfer` (e.g. `-s 10e6` for 10 MS/s).
-- By default, when you don’t give it any -f options,​hackrf_transfer sets the local oscillator to (1GHz)[https://github.com/greatscottgadgets/hackrf/blob/e5cfe1ac2b4d0621705ba3006d0f8abd447f50a3/host/hackrf-tools/src/hackrf_transfer.c#L109].
+- By default, each I+jQ value is sampled at 10 MS/s. If you ever need to change it, you can pass `-s <rate>` to `hackrf_transfer` (e.g. `-s 20e6` for 20 MS/s, the [maximum sample rate](https://github.com/greatscottgadgets/hackrf/blob/e5cfe1ac2b4d0621705ba3006d0f8abd447f50a3/host/hackrf-tools/src/hackrf_transfer.c#L106)).
+- By default, when you don’t give it any -f options,​hackrf_transfer sets the local oscillator to [1GHz](https://github.com/greatscottgadgets/hackrf/blob/e5cfe1ac2b4d0621705ba3006d0f8abd447f50a3/host/hackrf-tools/src/hackrf_transfer.c#L109).
 
 ## Processing the IQ Data in GNU Radio Companion
 
@@ -43,17 +43,17 @@ This section explains how to build a flowgraph in GNU Radio Companion (GRC) that
    - Double-click to open its properties and set:
      - **Scale**: `127`  
        (this normalizes the raw –128…127 integers into approximately –1.0…+1.0 floats)  
-    - The output of the **IChar to Complex** (or **Throttle**) block is now a stream of `std::complex<float>` at 20 MS/s, ready for visualization in the QT GUI Frequency Sink.3.
+    - The output of the **IChar to Complex** (or **Throttle**) block is now a stream of `std::complex<float>` at 10 MS/s, ready for visualization in the QT GUI Frequency Sink.3.
    - Wire the **File Source** output to the **IChar to Complex** input.  
-4. Set the variable `samp_rate` to `20e6` (20 MHz)  
+4. Set the variable `samp_rate` to `10e6` (10 MHz)  
   - Defines the SDR sampling rate in Hz  
-  - Sets the digital baseband bandwidth (± fₛ/2 = ± 10 MHz)  
+  - Sets the digital baseband bandwidth (± fₛ/2 = ± 5 MHz)  
 5. **(Optional) Throttle**  
-   - If you plan to play back a file without real-time hardware, insert a **Throttle** block after **IChar to Complex** and set **Sample Rate** to `20e6`.  
+   - If you plan to play back a file without real-time hardware, insert a **Throttle** block after **IChar to Complex** and set **Sample Rate** to `10e6`.
 6. Visualize the Signal
   - QT GUI Frequency Sink:
     - Connect the output of the Float to Complex block (or the Throttle block if used) to this sink.
-    - Set the bandwidth to 20MHz. We purposefully set `Bandwidth = samp_rate` because the sink uses that value to map digital bins to real-world frequencies and to scale the power axis correctly. Without it, you’d just get a generic plot with arbitrary units.
+    - Set the bandwidth to 10MHz. We purposefully set `Bandwidth = samp_rate` because the sink uses that value to map digital bins to real-world frequencies and to scale the power axis correctly. Without it, you’d just get a generic plot with arbitrary units.
     - Set the Center Frequency to 0 (since the data is now baseband).
     - Adjust autoscale or y-axis limits as needed.
 7. Run the Flowgraph
