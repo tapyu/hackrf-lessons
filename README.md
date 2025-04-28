@@ -1,7 +1,5 @@
 # HackRF IQ Data Capture and GNU Radio Companion Flowgraph
 
-This repository documents the steps we've taken to capture raw IQ data using a HackRF and process it in GNU Radio Companion (GRC) for visualization. (Installation steps for HackRF and GNU Radio are not included here.)
-
 ## Overview
 
 - **HackRF Data Capture:**  
